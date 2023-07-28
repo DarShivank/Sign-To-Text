@@ -9,6 +9,8 @@ from keras.models import load_model
 from cvzone.HandTrackingModule import HandDetector
 from string import ascii_uppercase
 import enchant
+
+
 ddd=enchant.Dict("en-US")
 hd = HandDetector(maxHands=1)
 hd2 = HandDetector(maxHands=1)
@@ -27,7 +29,7 @@ class Application:
     def __init__(self):
         self.vs = cv2.VideoCapture(0)
         self.current_image = None
-        self.model = load_model('/cnn8grps_rad1_model.h5')
+        self.model = load_model('cnn8grps_rad1_model.h5')
         self.speak_engine=pyttsx3.init()
         self.speak_engine.setProperty("rate",100)
         voices=self.speak_engine.getProperty("voices")
@@ -140,14 +142,14 @@ class Application:
                 x, y, w, h = hand['bbox']
                 image = cv2image_copy[y - offset:y + h + offset, x - offset:x + w + offset]
 
-                white = cv2.imread("C:\\Users\\devansh raval\\PycharmProjects\\pythonProject\\white.jpg")
+                white = cv2.imread('white.jpg')
                 # img_final=img_final1=img_final2=0
 
-                handz = hd2.findHands(image, draw=False, flipType=True)
+                hand = hd2.findHands(image, draw=False, flipType=True)
                 print(" ", self.ccc)
                 self.ccc += 1
-                if handz:
-                    hand = handz[0]
+                if hands:
+                    hand = hands[0]
                     self.pts = hand['lmList']
                     # x1,y1,w1,h1=hand['bbox']
 
@@ -259,8 +261,9 @@ class Application:
         self.word4 = " "
 
     def predict(self, test_image):
-        white=test_image
+        white = test_image
         white = white.reshape(1, 400, 400, 3)
+
         prob = np.array(self.model.predict(white)[0], dtype='float32')
         ch1 = np.argmax(prob, axis=0)
         prob[ch1] = 0

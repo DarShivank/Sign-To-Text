@@ -5,9 +5,9 @@ import numpy as np
 from keras.models import load_model
 import traceback
 
-model = load_model('/cnn8grps_rad1_model.h5')
+model = load_model('cnn8grps_rad1_model.h5')
 white = np.ones((400, 400), np.uint8) * 255
-cv2.imwrite("C:\\Users\\devansh raval\\PycharmProjects\\pythonProject\\white.jpg", white)
+cv2.imwrite("white.jpg", white)
 
 capture = cv2.VideoCapture(0)
 
@@ -44,11 +44,11 @@ while True:
             hand = hands[0]
             x, y, w, h = hand['bbox']
             image = frame[y - offset:y + h + offset, x - offset:x + w + offset]
-            white = cv2.imread("C:\\Users\\devansh raval\\PycharmProjects\\pythonProject\\white.jpg")
+            white = cv2.imread("white.jpg")
             # img_final=img_final1=img_final2=0
-            handz = hd2.findHands(image, draw=False, flipType=True)
-            if handz:
-                hand = handz[0]
+            hands = hd2.findHands(image, draw=False, flipType=True)
+            if hands:
+                hand = hands[0]
                 pts = hand['lmList']
                 # x1,y1,w1,h1=hand['bbox']
 
